@@ -5,7 +5,8 @@ simple timer in javascript
 
 ## Caution
 
-``timer`` uses UTC time
+* ``timer`` uses UTC time
+* If you set the timer in the past, then callback function will be called immediately
 
 ## Usage
 

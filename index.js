@@ -25,8 +25,10 @@ function Timer(options, callback) {
 
     this.done = false;
 
+    //past time -> call callback immediately
     if(!this.validate()) {
-        throw new Error('You can not timmer in the past ! Weird...');
+        this.done = true;
+        return callback();
     }
 
     var self = this;
@@ -34,26 +36,11 @@ function Timer(options, callback) {
     var interval = setInterval(function() {
         console.log('Timer checking every %s second...', Math.floor(self.interval / 1000));
 
-        var now = new Date();
-
-        console.log(now);
-
-        var current_date   = now.getUTCDate();
-        var current_month  = now.getUTCMonth();
-        var current_year   = now.getUTCFullYear();
-        var current_hour   = now.getUTCHours();
-        var current_minute = now.getUTCMinutes();
-        var current_second = now.getUTCSeconds();
-
         //on time
-        if(current_date === self.date && current_month === self.month && current_year === self.year && current_hour === self.hour && current_minute === self.minute && current_second > self.second) {
-            
+        if(!self.validate()) {
             console.log('On Time !!!');
-
-            this.done = true;
-
+            self.done = true;
             callback();
-
             return clearInterval(interval);
         }
 
