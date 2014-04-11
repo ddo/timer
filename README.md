@@ -15,6 +15,8 @@ Timer(options, callback);
 
 ## Example
 
+*set timer today at* ``11:10:45``
+
 ```js
 Timer({
     hour: 11,
