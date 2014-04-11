@@ -26,7 +26,7 @@ function Timer(options, callback) {
     this.done = false;
 
     //past time -> call callback immediately
-    if(!this.validate()) {
+    if(!this.isPast()) {
         this.done = true;
         return callback();
     }
@@ -37,7 +37,7 @@ function Timer(options, callback) {
         console.log('Timer checking every %s second...', Math.floor(self.interval / 1000));
 
         //on time
-        if(!self.validate()) {
+        if(!self.isPast()) {
             console.log('On Time !!!');
             self.done = true;
             callback();
@@ -57,10 +57,10 @@ Timer.prototype.isDone = function() {
 };
 
 /**
- * validate options
+ * isPast options
  * @return {Boolean}
  */
-Timer.prototype.validate = function() {
+Timer.prototype.isPast = function() {
     var now = new Date();
 
     var current_date   = now.getUTCDate();
