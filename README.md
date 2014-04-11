@@ -52,7 +52,8 @@ var timer = Timer({
     second: 45
 }, function(){
     console.log(new Date());
+    console.log(timer.isDone());
 });
 
-timer.isDone();
+console.log(timer.isDone());
 ```
