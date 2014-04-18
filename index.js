@@ -1,3 +1,7 @@
+if(typeof module !== 'undefined' && module.exports) {
+    module.exports = timer;
+}
+
 /**
  * set a callback run on a specific time in the future
  * @param {Object}   options  date, interval...
