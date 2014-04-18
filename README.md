@@ -47,14 +47,14 @@ timer({
 ### .isDone()
 
 ```js
-var timer = timer({
+var t = timer({
     hour: 11,
     minute: 10,
     second: 45
 }, function(){
     console.log(new Date());
-    console.log(timer.isDone());
+    console.log(t.isDone());
 });
 
-console.log(timer.isDone());
+console.log(t.isDone());
 ```
