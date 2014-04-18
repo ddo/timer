@@ -11,7 +11,7 @@ simple timer in javascript
 ## Usage
 
 ```js
-Timer(options, callback);
+timer(options, callback);
 ```
 
 ## Example
@@ -19,7 +19,7 @@ Timer(options, callback);
 *set timer today at* ``11:10:45``
 
 ```js
-Timer({
+timer({
     hour: 11,
     minute: 10,
     second: 45
@@ -47,7 +47,7 @@ Timer({
 ### .isDone()
 
 ```js
-var timer = Timer({
+var timer = timer({
     hour: 11,
     minute: 10,
     second: 45

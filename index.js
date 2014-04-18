@@ -3,9 +3,9 @@
  * @param {Object}   options  date, interval...
  * @param {Function} callback function run on time
  */
-function Timer(options, callback) {
-    if(!(this instanceof Timer)) {
-        return new Timer(options, callback);
+function timer(options, callback) {
+    if(!(this instanceof timer)) {
+        return new timer(options, callback);
     }
 
     if(arguments.length === 1 || !callback) {
@@ -34,7 +34,7 @@ function Timer(options, callback) {
     var self = this;
 
     var interval = setInterval(function() {
-        console.log('Timer checking every %s second...', Math.floor(self.interval / 1000));
+        console.log('timer checking every %s second...', Math.floor(self.interval / 1000));
 
         //on time
         if(!self.isPast()) {
@@ -52,7 +52,7 @@ function Timer(options, callback) {
  * did it trigger ?
  * @return {Boolean}
  */
-Timer.prototype.isDone = function() {
+timer.prototype.isDone = function() {
     return this.done;
 };
 
@@ -60,7 +60,7 @@ Timer.prototype.isDone = function() {
  * isPast options
  * @return {Boolean}
  */
-Timer.prototype.isPast = function() {
+timer.prototype.isPast = function() {
     var now = new Date();
 
     var current_date   = now.getUTCDate();
