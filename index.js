@@ -1,6 +1,6 @@
-if(typeof module !== 'undefined' && module.exports) {
-    module.exports = timer;
-}
+var debug = require('debug')('timer');
+
+module.exports = timer;
 
 /**
  * set a callback run on a specific time in the future
@@ -19,18 +19,47 @@ function timer(options, callback) {
 
     var now = new Date();
 
-    this.date     = options.date     || now.getUTCDate();
-    this.month    = options.month    || now.getUTCMonth();
+    if(options.year === 0) {
+        options.year = 1970;
+    }
+
+    if(options.month === 0) {
+        options.month = 1;
+    }
+
+    if(options.date === 0) {
+        options.date = 1;
+    }
+
+    if(options.hour === 0) {
+        options.hour = '0';
+    }
+
+    if(options.minute === 0) {
+        options.minute = '0';
+    }
+
+    if(options.second === 0) {
+        options.second = '0';
+    }
+
     this.year     = options.year     || now.getUTCFullYear();
+    this.month    = options.month    || now.getUTCMonth();
+    this.date     = options.date     || now.getUTCDate();
     this.hour     = options.hour     || now.getUTCHours();
     this.minute   = options.minute   || now.getMinutes();
     this.second   = options.second   || now.getUTCSeconds();
-    this.interval = options.interval || 5000;
+    this.interval = options.interval || 500;
+
+    this.deadline = new Date(Date.UTC(this.year, this.month, this.date, this.hour, this.minute, this.second, 0));
+
+    debug('deadline', this.deadline);
 
     this.done = false;
 
     //past time -> call callback immediately
-    if(!this.isPast()) {
+    if(this.isPast()) {
+        debug('on time');
         this.done = true;
         return callback();
     }
@@ -38,15 +67,15 @@ function timer(options, callback) {
     var self = this;
 
     var interval = setInterval(function() {
-        // console.log('timer checking every %s second...', Math.floor(self.interval / 1000));
-
         //on time
-        if(!self.isPast()) {
-            console.log('On Time !!!');
+        if(self.isPast()) {
+            debug('on time');
             self.done = true;
             callback();
             return clearInterval(interval);
         }
+
+        debug('timer checking every %s ms...', self.interval);
 
         //ontime
     }, self.interval);
@@ -61,48 +90,9 @@ timer.prototype.isDone = function() {
 };
 
 /**
- * isPast options
+ * isPast
  * @return {Boolean}
  */
 timer.prototype.isPast = function() {
-    var now = new Date();
-
-    var current_date   = now.getUTCDate();
-    var current_month  = now.getUTCMonth();
-    var current_year   = now.getUTCFullYear();
-    var current_hour   = now.getUTCHours();
-    var current_minute = now.getUTCMinutes();
-    var current_second = now.getUTCSeconds();
-
-    //year expired
-    if(current_year > this.year) {
-        return false;
-    }
-
-    //month expired
-    if(current_month > this.month && current_year === this.year) {
-        return false;
-    }
-
-    //date expired
-    if(current_date > this.date && current_year === this.year && current_month === this.month) {
-        return false;
-    }
-
-    //hour expired
-    if(current_hour > this.hour && current_year === this.year && current_month === this.month && current_date === this.date) {
-        return false;
-    }
-
-    //min expired
-    if(current_minute > this.minute && current_year === this.year && current_month === this.month && current_date === this.date && current_hour === this.hour) {
-        return false;
-    }
-
-    //second expired
-    if(current_second > this.second && current_year === this.year && current_month === this.month && current_date === this.date && current_hour === this.hour && current_minute === this.minute) {
-        return false;
-    }
-
-    return true;
+    return (new Date()) - this.deadline >= 0;//now - deadline
 };

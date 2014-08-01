@@ -1,10 +1,13 @@
+var timer = require('./');
+
 var t = timer({
-    hour: 11,
-    minute: 45,
-    second: 45
+    hour: 19,
+    minute: 22,
+    second: 11
 }, function(){
-    console.log(new Date());
-    console.log(t.isDone());
+    var now = new Date();
+    console.log(now);
+    // console.log(t.isDone());
 });
 
-console.log(t.isDone());
+// console.log(t.isDone());

@@ -4,7 +4,8 @@
   "description": "timer =====",
   "main": "index.js",
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "start": "DEBUG=* node example"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ddo/timer/issues"
   },
-  "homepage": "https://github.com/ddo/timer"
+  "homepage": "https://github.com/ddo/timer",
+  "dependencies": {
+    "debug": "^1.0.4"
+  }
 }
