@@ -38,7 +38,7 @@ function timer(options, callback) {
     var self = this;
 
     var interval = setInterval(function() {
-        console.log('timer checking every %s second...', Math.floor(self.interval / 1000));
+        // console.log('timer checking every %s second...', Math.floor(self.interval / 1000));
 
         //on time
         if(!self.isPast()) {
