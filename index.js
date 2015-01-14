@@ -58,7 +58,7 @@ function timer(options, callback) {
     this.done = false;
 
     //past time -> call callback immediately
-    if(this.isPast()) {
+    if(this._isPast()) {
         debug('on time');
         this.done = true;
         return callback();
@@ -68,7 +68,7 @@ function timer(options, callback) {
 
     var interval = setInterval(function() {
         //on time
-        if(self.isPast()) {
+        if(self._isPast()) {
             debug('on time');
             self.done = true;
             callback();
@@ -92,7 +92,9 @@ timer.prototype.isDone = function() {
 /**
  * isPast
  * @return {Boolean}
+ *
+ * api private
  */
-timer.prototype.isPast = function() {
+timer.prototype._isPast = function() {
     return (new Date()) - this.deadline >= 0;//now - deadline
 };
