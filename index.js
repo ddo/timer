@@ -43,43 +43,51 @@ function timer(options, callback) {
         options.second = '0';
     }
 
-    this.year     = options.year     || now.getUTCFullYear();
-    this.month    = options.month    || now.getUTCMonth();
-    this.date     = options.date     || now.getUTCDate();
-    this.hour     = options.hour     || now.getUTCHours();
-    this.minute   = options.minute   || now.getMinutes();
-    this.second   = options.second   || now.getUTCSeconds();
-    this.interval = options.interval || 500;
+    if(options.ms === 0) {
+        options.ms = '0';
+    }
 
-    this.deadline = new Date(Date.UTC(this.year, this.month, this.date, this.hour, this.minute, this.second, 0));
-
-    debug('deadline', this.deadline);
+    this.year   = options.year      || now.getUTCFullYear();
+    this.month  = options.month     || now.getUTCMonth();
+    this.date   = options.date      || now.getUTCDate();
+    this.hour   = options.hour      || now.getUTCHours();
+    this.minute = options.minute    || now.getMinutes();
+    this.second = options.second    || now.getUTCSeconds();
+    this.ms     = options.ms        || now.getUTCMilliseconds();
 
     this.done = false;
 
-    //past time -> call callback immediately
-    if(this._isPast()) {
-        debug('on time');
-        this.done = true;
+    this.deadline = new Date(Date.UTC(this.year, this.month, this.date, this.hour, this.minute, this.second, this.ms));
+
+    debug('deadline', this.deadline.toISOString());
+
+    this._tick(callback);
+}
+
+/**
+ * tick
+ * @param  {Function} callback
+ */
+timer.prototype._tick = function(callback) {
+    var self = this;
+
+    var now = (new Date()).getTime();
+    var diff = self.deadline - now;
+
+    if(diff <= 0) {
+        debug('on time', (new Date()).toISOString());
+        self.done = true;
         return callback();
     }
 
-    var self = this;
+    var next_tick = diff / 2;
 
-    var interval = setInterval(function() {
-        //on time
-        if(self._isPast()) {
-            debug('on time');
-            self.done = true;
-            callback();
-            return clearInterval(interval);
-        }
+    debug('next tick', next_tick, new Date(now + next_tick).toISOString());
 
-        debug('timer checking every %s ms...', self.interval);
-
-        //ontime
-    }, self.interval);
-}
+    setTimeout(function() {
+        self._tick(callback);
+    }, next_tick);
+};
 
 /**
  * did it trigger ?
@@ -87,14 +95,4 @@ function timer(options, callback) {
  */
 timer.prototype.isDone = function() {
     return this.done;
-};
-
-/**
- * isPast
- * @return {Boolean}
- *
- * api private
- */
-timer.prototype._isPast = function() {
-    return (new Date()) - this.deadline >= 0;//now - deadline
 };

@@ -40,7 +40,7 @@ timer({
 * ``hour``      :   0 - 23.
 * ``minute``    :   0 - 59.
 * ``second``    :   0 - 59.
-* ``interval``  :   interval time in milisecond (Default: 500).
+* ``ms``        :   0 - 999
 
 ## API
 
